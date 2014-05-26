@@ -52,7 +52,7 @@
 class certsigner::aws (
   $autosigner = 'autosign.rb',
   $fog_config = '/etc/puppetlabs/puppet/autosignfog.yaml',
-  $fog_config_source = 'puppet:///modules/certsigner/autosignfog.yaml',
+  $fog_config_source = 'puppet:///modules/certsigner/autosignfog.yaml.erb',
   $fog_config_replace = false,
   $autosign_dest = '/opt/puppet/bin/autosign.rb',
   $autosign_source = 'puppet:///modules/certsigner/autosign.rb.erb',
@@ -82,7 +82,7 @@ class certsigner::aws (
     group   => $puppet_group,
     mode    => '0600',
     replace => $fog_config_replace,
-    source  => $fog_config_source,
+    source  => template($fog_config_source),
   }
 
   file { "/opt/puppet/bin/${autosigner}":
@@ -92,7 +92,7 @@ class certsigner::aws (
     owner   => $puppet_user,
     group   => $puppet_group,
     mode    => '0755',
-    source  => $autosign_source,
+    source  => template($autosign_source),
     require => File[$fog_config],
   }
 

@@ -1,9 +1,9 @@
-#!/opt/puppet/bin/ruby
+<%= @real_autosign_rubyvm %>
 
 require 'etc'
 
 ENV['HOME'] = Etc.getpwuid(Process.uid).dir
-ENV['FOG_RC'] = '/etc/puppetlabs/puppet/autosignfog.yaml'
+ENV['FOG_RC'] = '<%= @fog_config %>'
 
 require 'fog'
 require 'puppet'
