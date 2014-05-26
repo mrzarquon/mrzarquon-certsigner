@@ -5,6 +5,9 @@
 #
 # Configures and replaces the autosign value in the puppet config
 #
+# Autosign.rb requires the fog gem, which is not maintained by this
+# package.  This is shipped with Puppet Enterprise, but not OSS.
+#
 # === Parameters
 #
 # [*fog_config*]
@@ -53,6 +56,7 @@ class certsigner::aws (
   $fog_config_replace = false,
   $autosign_dest = '/opt/puppet/bin/autosign.rb',
   $autosign_source = 'puppet:///modules/certsigner/autosign.rb.erb',
+  $autosign_rubyvm = '#!/opt/puppet/bin/ruby',
   $puppet_user = $settings::user,
   $puppet_group = $settings::group,
   $puppet_config = $settings::config
