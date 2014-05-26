@@ -23,7 +23,8 @@
 #   Location on disk to place the autosign executable script.
 #
 # [*puppet_user*]
-#   User puppet runs under - defaults to $settings::user (puppet on OSS, pe-puppet on PE)
+#   User puppet runs under - defaults to $settings::user (puppet on OSS,
+#   pe-puppet on PE)
 #
 # [*puppet_group*]
 #   Group puppet runs under - defaults to $settings::group
@@ -36,12 +37,14 @@
 # include certsigner::aws
 #
 # === Authors
-#    Jeremy T. Bouse <jbouse@debian.org> - autosigner.rb (https://gist.github.com/jbouse/8763661)
+#    Jeremy T. Bouse <jbouse@debian.org> - autosigner.rb
+#      - (https://gist.github.com/jbouse/8763661)
 #    Chris Barker <github.com/mrzarquon> - Initial module
 #    Vincent Janelle <randomfrequency@gmail.com> - Documentation and parameters
 #
 # === Copyright
 #    Copyright 2014 Various, all rights reserved.
+#    Autosign.rb Copyright 2014 Jeremy T. Bouse - Apache License, Version 2.0
 #
 class certsigner::aws (
   $autosigner = 'autosign.rb',
@@ -49,6 +52,7 @@ class certsigner::aws (
   $fog_config_source = 'puppet:///modules/certsigner/autosignfog.yaml',
   $fog_config_replace = false,
   $autosign_dest = '/opt/puppet/bin/autosign.rb',
+  $autosign_source = 'puppet:///modules/certsigner/autosign.rb.erb',
   $puppet_user = $settings::user,
   $puppet_group = $settings::group,
   $puppet_config = $settings::config
@@ -70,7 +74,7 @@ class certsigner::aws (
     owner   => $puppet_user,
     group   => $puppet_group,
     mode    => '0755',
-    source  => "puppet:///modules/certsigner/${autosigner}",
+    source  => $autosign_source,
     require => File[$fog_config],
   }
 
