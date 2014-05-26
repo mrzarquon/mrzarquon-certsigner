@@ -56,11 +56,25 @@ class certsigner::aws (
   $fog_config_replace = false,
   $autosign_dest = '/opt/puppet/bin/autosign.rb',
   $autosign_source = 'puppet:///modules/certsigner/autosign.rb.erb',
-  $autosign_rubyvm = '#!/opt/puppet/bin/ruby',
+  $autosign_rubyvm_auto = true,
+  $autosign_rubyvm = undef,
   $puppet_user = $settings::user,
   $puppet_group = $settings::group,
   $puppet_config = $settings::config
 ) {
+
+  if ( $autosign_rubyvm_auto == true and $::is_pe == 'true' ) {
+    # PE ships ruby with fog, use it
+    $real_autosign_rubyvm = '#!/opt/puppet/bin/ruby'
+  } elsif ($autosign_rubyvm_auto == true) {
+    # We're probably not using PE, so use system ruby?
+    $real_autosign_rubyvm = '#!/usr/bin/ruby'
+  } elsif ($autosign_rubyvm_auto == false and $autosign_rubyvm == undef ) {
+    # Give up.
+    fail('certsigner::aws::autosign_rubyvm_auto is false and you haven\'t defined $autosign_rubyvm')
+  } else {
+    $real_autosign_rubyvm = $autosign_rubyvm
+  }
 
   file { $fog_config:
     ensure  => file,
