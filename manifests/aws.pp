@@ -82,7 +82,7 @@ class certsigner::aws (
     group   => $puppet_group,
     mode    => '0600',
     replace => $fog_config_replace,
-    source  => template($fog_config_source),
+    content => template($fog_config_source),
   }
 
   file { "/opt/puppet/bin/${autosigner}":
@@ -92,7 +92,7 @@ class certsigner::aws (
     owner   => $puppet_user,
     group   => $puppet_group,
     mode    => '0755',
-    source  => template($autosign_source),
+    content => template($autosign_source),
     require => File[$fog_config],
   }
 
