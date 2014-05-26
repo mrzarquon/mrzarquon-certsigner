@@ -52,10 +52,10 @@
 class certsigner::aws (
   $autosigner = 'autosign.rb',
   $fog_config = '/etc/puppetlabs/puppet/autosignfog.yaml',
-  $fog_config_source = 'puppet:///modules/certsigner/autosignfog.yaml.erb',
+  $fog_config_source = 'certsigner/autosignfog.yaml.erb',
   $fog_config_replace = false,
   $autosign_dest = '/opt/puppet/bin/autosign.rb',
-  $autosign_source = 'puppet:///modules/certsigner/autosign.rb.erb',
+  $autosign_source = 'certsigner/autosign.rb.erb',
   $autosign_rubyvm_auto = true,
   $autosign_rubyvm = undef,
   $puppet_user = $settings::user,
