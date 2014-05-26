@@ -6,4 +6,4 @@ edit the /etc/puppetlabs/puppet/autosignfog.yaml file to include your aws creden
 
 See the example el6.aws.bash script for a possible User Data script to used when deploying in cloud formations or through other AWS means.
 
-Originally inspired by jblouse[https://github.com/jbouse]'s gist: https://gist.github.com/jbouse/8763661
+Originally inspired by jbouse's [https://github.com/jbouse] gist [https://gist.github.com/jbouse/8763661] released unde the Apache 2.0 license.
