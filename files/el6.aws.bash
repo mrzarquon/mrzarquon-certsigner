@@ -19,8 +19,12 @@ extension_requests:
   pp_instance_id: <%= %x{curl -s http://169.254.169.254/latest/meta-data/instance-id} %>
 END
 
-/opt/puppet/bin/puppet config set server ${PE_MASTER} --section agent
-/opt/puppet/bin/puppet config set environment production --section agent
-/opt/puppet/bin/puppet config set certname $(curl -s http://169.254.169.254/latest/meta-data/instance-id) --section agent
+declare -x PUPPET='/opt/puppet/bin/puppet'
 
-/opt/puppet/bin/puppet resource service pe-puppet ensure=running enable=true
+$PUPPET config set server ${PE_MASTER} --section agent
+$PUPPET config set environment production --section agent
+$PUPPET config set certname $(curl -s http://169.254.169.254/latest/meta-data/instance-id) --section agent
+
+$PUPPET resource service pe-puppet ensure=running enable=true
+sleep 120
+$PUPPET agent -t
