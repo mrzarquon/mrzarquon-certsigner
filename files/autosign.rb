@@ -1,3 +1,4 @@
+[root@master vagrant]# cat /etc/puppetlabs/puppet/ssl/
 #!/opt/puppet/bin/ruby
 
 require 'etc'
@@ -12,8 +13,15 @@ require 'puppet/ssl/certificate_request'
 clientcert = ARGV.pop
 
 csr = Puppet::SSL::CertificateRequest.from_s(STDIN.read)
-pp_instance_id = csr.request_extensions.find { |a| a['oid'] == 'pp_instance_id' }
-instance_id = pp_instance_id['value']
+
+# if you use the pp_instance_id embedded cert we will use that
+# otherwise we will assume you want us to use certname
+if csr.request_extensions.find { |a| a['oid'] == 'pp_instance_id' }
+  instance_id = csr.request_extensions.find { |a| a['oid'] == 'pp_instance_id' }['value']
+else
+  instance_id = clientcert
+end
+
 
 retcode = 0
 
