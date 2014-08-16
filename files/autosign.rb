@@ -1,4 +1,3 @@
-[root@master vagrant]# cat /etc/puppetlabs/puppet/ssl/
 #!/opt/puppet/bin/ruby
 
 require 'etc'
