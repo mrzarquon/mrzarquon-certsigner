@@ -6,16 +6,7 @@ if [ ! -d /etc/yum.repos.d ]; then
   mkdir -p /etc/yum.repos.d
 fi
 
-cat > /etc/yum.repos.d/pe_repo.repo <<REPO
-[puppetlabs-pepackages]
-name=Puppet Labs PE Packages \$releasever - \$basearch
-baseurl=https://${PE_MASTER}:8140/packages/current/el-6-x86_64
-enabled=1
-gpgcheck=1
-sslverify=False
-proxy=_none_
-gpgkey=https://${PE_MASTER}:8140/packages/GPG-KEY-puppetlabs
-REPO
+curl -sk https://${PE_MASTER}:8140/packages/current/el-6-x86_64.repo > /etc/yum.repos.d/el-6-x86_64.repo
 
 yum -y install pe-agent
 
