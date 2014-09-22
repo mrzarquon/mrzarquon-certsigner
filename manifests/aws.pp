@@ -2,9 +2,9 @@ class certsigner::aws (
   $autosigner = 'autosign.rb',
 ) {
 
-  if $autosigner == 'autosign_classify.rb' {
-    include certsigner::hieraclassifier
-  }
+  #if $autosigner == 'autosign_classify.rb' {
+  #  include certsigner::hieraclassifier
+  #}
 
 
   file { '/etc/puppetlabs/puppet/autosignfog.yaml':
