@@ -1,4 +1,11 @@
-class certsigner::aws {
+class certsigner::aws (
+  $autosigner = 'autosign.rb',
+) {
+
+  if $autosigner == 'autosign_classify.rb' {
+    include certsigner::hieraclassifier
+  }
+
 
   file { '/etc/puppetlabs/puppet/autosignfog.yaml':
     ensure  => file,
@@ -9,12 +16,12 @@ class certsigner::aws {
     source  => 'puppet:///modules/certsigner/autosignfog.yaml',
   }
   
-  file { '/opt/puppet/bin/autosign.rb':
+  file { "/opt/puppet/bin/${autosigner}":
     ensure  => file,
     owner   => 'pe-puppet',
     group   => 'pe-puppet',
     mode    => '0755',
-    source  => 'puppet:///modules/certsigner/autosign.rb',
+    source  => "puppet:///modules/certsigner/${autosigner}",
     require => File['/etc/puppetlabs/puppet/autosignfog.yaml'],
   }
 
@@ -23,8 +30,8 @@ class certsigner::aws {
     path    => '/etc/puppetlabs/puppet/puppet.conf',
     section => 'master',
     setting => 'autosign',
-    value   => '/opt/puppet/bin/autosign.rb',
-    require => File['/opt/puppet/bin/autosign.rb'],
+    value   => "/opt/puppet/bin/${autosigner}",
+    require => File["/opt/puppet/bin/${autosigner}"],
   }
 
 }
