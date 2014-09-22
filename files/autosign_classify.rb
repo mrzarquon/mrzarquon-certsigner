@@ -37,7 +37,7 @@ classes = server.tags['puppet_classes'].delete(' ').split(",")
 
 unless classes.nil?
   classyaml = { "classes" => classes }
-  File.open("/etc/puppetlabs/puppet/environments/productions/data/clientcert/#{clientcert}.yaml", 'w') { |f| f.write classyaml.to_yaml }
+  File.open("/etc/puppetlabs/puppet/environments/production/data/clientcert/#{clientcert}.yaml", 'w') { |f| f.write classyaml.to_yaml }
 end
 
 exit retcode
