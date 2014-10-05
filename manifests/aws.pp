@@ -85,8 +85,6 @@ class certsigner::aws (
     content => template($fog_config_source),
   }
 
-  file { "/opt/puppet/bin/${autosigner}":
-
   file { $autosign_dest:
     ensure  => file,
     owner   => $puppet_user,
