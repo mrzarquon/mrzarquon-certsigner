@@ -1,9 +1,23 @@
-#!/opt/puppet/bin/ruby
+<%= @real_autosign_rubyvm %>
+
+# Copyright 2014 Jeremy T. Bouse
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 require 'etc'
 
 ENV['HOME'] = Etc.getpwuid(Process.uid).dir
-ENV['FOG_RC'] = '/etc/puppetlabs/puppet/autosignfog.yaml'
+ENV['FOG_RC'] = '<%= @fog_config %>'
 
 require 'fog'
 require 'puppet'
@@ -20,6 +34,8 @@ if csr.request_extensions.find { |a| a['oid'] == 'pp_instance_id' }
 else
   instance_id = clientcert
 end
+
+
 retcode = 0
 
 ec2 = Fog::Compute.new( :provider => :aws)
@@ -31,13 +47,6 @@ elsif not server
   retcode = 2
 elsif server.state != 'running'
   retcode = 3
-end
-
-classes = server.tags['puppet_classes'].delete(' ').split(",")
-
-unless classes.nil?
-  classyaml = { "classes" => classes }
-  File.open("/etc/puppetlabs/puppet/environments/production/data/clientcert/#{clientcert}.yaml", 'w') { |f| f.write classyaml.to_yaml }
 end
 
 exit retcode

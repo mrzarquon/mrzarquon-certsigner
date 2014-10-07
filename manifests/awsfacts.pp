@@ -1,15 +1,17 @@
+#
+# == Class certsigner::awsfacts
+#   Configures facts.d location with an executable script to provide various ec2
+#   facts
+#
+# === Usage
+# include certsigner::awsfacts
+#
 class certsigner::awsfacts {
-  file { '/etc/puppetlabs/facter':
-    ensure => directory,
-  }
-  file { '/etc/puppetlabs/facter/facts.d':
-    ensure => directory,
-  }
-  file { '/etc/puppetlabs/facter/facts.d/ec2_public.sh':
+  file { "${settings::pluginfactdest}/ec2_public.sh":
     ensure  => file,
     mode    => '0755',
-    owner   => 'pe-puppet',
-    group   => 'pe-puppet',
+    owner   => $settings::user,
+    group   => $settings::group,
     source => "puppet:///modules/certsigner/ec2_public.sh",
   }
 }

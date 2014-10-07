@@ -1,9 +1,9 @@
-#!/opt/puppet/bin/ruby
+<%= @real_autosign_rubyvm %>
 
 require 'etc'
 
 ENV['HOME'] = Etc.getpwuid(Process.uid).dir
-ENV['FOG_RC'] = '/etc/puppetlabs/puppet/autosignfog.yaml'
+ENV['FOG_RC'] = '<%= @fog_config %>'
 
 require 'fog'
 require 'puppet'
@@ -20,8 +20,6 @@ if csr.request_extensions.find { |a| a['oid'] == 'pp_instance_id' }
 else
   instance_id = clientcert
 end
-
-
 retcode = 0
 
 ec2 = Fog::Compute.new( :provider => :aws)
@@ -33,6 +31,13 @@ elsif not server
   retcode = 2
 elsif server.state != 'running'
   retcode = 3
+end
+
+classes = server.tags['puppet_classes'].delete(' ').split(",")
+
+unless classes.nil?
+  classyaml = { "classes" => classes }
+  File.open("/etc/puppetlabs/puppet/environments/production/data/clientcert/#{clientcert}.yaml", 'w') { |f| f.write classyaml.to_yaml }
 end
 
 exit retcode
