@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# original example to download: http://geek.co.il/2014/05/26/script-day-upload-files-to-amazon-s3-using-bash
+
 function retrieve_key () {
   NODENAME=$1
   KEYSDIR=$2
