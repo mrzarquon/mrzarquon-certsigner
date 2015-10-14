@@ -51,6 +51,15 @@ end
 # the only time we can sign this cert is if this instance hasn't been given a signed
 # cert before and we match on the instance in AWS also
 if signed != true && ami_match == true
+  ec2.create_tags({
+    resources: [instance_id],
+    tags: [
+      {
+        key: 'puppet_cert_signed',
+        value: certname,
+      },
+    ],
+  })
   returncode = 0
 else
   returncode = 200
